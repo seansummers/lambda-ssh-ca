@@ -3,12 +3,6 @@ import os
 import subprocess
 
 
-with open('/etc/system-release', 'r') as release_check:
-    if 'Amazon Linux AMI release 2016.03' not in release_check.read():
-        print('WARNING: Lambda AMI has changed, update libfipscheck!')
-
-
-PATH = '/ssh'
 DEFAULT_EVENT = {
     'signing_key': 'server_ca',
     'key_identifier': 'host_auth_server',
@@ -17,6 +11,13 @@ DEFAULT_EVENT = {
     'key_to_sign': 'server_ca.pub',
     'is_host': 'true',
 }
+
+with open('/etc/system-release', 'r') as release_check:
+    if 'Amazon Linux AMI release 2016.03' not in release_check.read():
+        print('WARNING: Lambda AMI has changed, update libfipscheck!')
+
+PATH = '.'
+
 cwd = os.path.abspath(PATH)
 ssh_keygen = os.path.join(cwd, 'ssh-keygen')
 env = os.environ.copy()
