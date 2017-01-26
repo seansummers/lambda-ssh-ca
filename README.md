@@ -12,7 +12,7 @@ If you need a key signed; this will sign and return a cert.
 ### TBD
 * how does the Lambda time affect key expiration?
 
-### (Possible) SSH login options
+### (Possible) SSH login options see https://github.com/openssh/openssh-portable/blob/master/PROTOCOL.certkeys
 * restrict (all forwarding, and no pty or rc unless readded)
 * command="program"
 * environment="NAME=value"
