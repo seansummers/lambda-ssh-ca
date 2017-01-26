@@ -6,7 +6,7 @@ import subprocess
 with open('/etc/system-release', 'r') as release_check:
     if 'Amazon Linux AMI release 2016.03' not in release_check.read():
         print('WARNING: Lambda AMI has changed, update libfipscheck!')
-    
+
 
 PATH = '/ssh'
 DEFAULT_EVENT = {
@@ -20,7 +20,9 @@ DEFAULT_EVENT = {
 cwd = os.path.abspath(PATH)
 ssh_keygen = os.path.join(cwd, 'ssh-keygen')
 env = os.environ.copy()
-env.update(LD_LIBRARY_PATH=':'.join(_ for _ in (env.get('LD_LIBRARY_PATH', ''), cwd) if _))
+
+ld_library_path = (_ for _ in (env.get('LD_LIBRARY_PATH', ''), cwd) if _)
+env.update(LD_LIBRARY_PATH=':'.join(ld_library_path))
 
 
 def call(command, cwd, env):
@@ -37,9 +39,9 @@ def handler(event=None, context=None):
     age = event.get('age')
     key_to_sign = event.get('key_to_sign')
     is_host = event.get('is_host')
-    command = [ ssh_keygen ]
+    command = [ssh_keygen]
     if is_host:
-       command.append('-h')
+        command.append('-h')
     command.extend([
         '-s', signing_key,
         '-I', key_identifier,
@@ -53,10 +55,10 @@ def handler(event=None, context=None):
 if __name__ == '__main__':
     handler()
     user_event = {
-    'signing_key': 'users_ca',
-    'key_identifier': 'host_auth_server',
-    'principal_name': 'user username',
-    'age': '+52w',
-    'key_to_sign': 'users_ca.pub',
+        'signing_key': 'users_ca',
+        'key_identifier': 'host_auth_server',
+        'principal_name': 'user username',
+        'age': '+52w',
+        'key_to_sign': 'users_ca.pub',
     }
     handler(user_event)
