@@ -11,3 +11,18 @@ If you need a key signed; this will sign and return a cert.
 
 ### TBD
 * how does the Lambda time affect key expiration?
+
+### (Possible) SSH login options
+* restrict (all forwarding, and no pty or rc unless readded)
+* command="program"
+* environment="NAME=value"
+* from="pattern-list" (see PATTERNS in ssh_config)
+* [no-]agent-forwarding
+* [no-]port-forwarding
+* [no-]pty
+* [no-]user-rc
+* [no-]X11-forwarding
+* permitopen="host:port"
+* principals="name1[,name2,...]"
+* tunnel="n"
+
